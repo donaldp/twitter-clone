@@ -79,6 +79,15 @@ export class Authentication {
 	}
 
 	/**
+	 * Redirect the user after they have been registered.
+	 */
+	static onRegistered(request: Request) {
+		if (request.expectsHtml()) {
+			return Redirect.to('/')
+		}
+	}
+
+	/**
 	 * Add a gravatar to the user object after they have been authenticated.
 	 */
 	static async onFetchAuthenticated(table: string, id: number): Promise<User> {
