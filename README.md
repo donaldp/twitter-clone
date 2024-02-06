@@ -52,6 +52,12 @@ Once you have added the mailtrap credentials, you can generate an application ke
 node craftsman key:generate
 ```
 
+Then cache the configuration:
+
+```bash
+node craftsman config:cache
+```
+
 Then run application migrations:
 
 ```bash
