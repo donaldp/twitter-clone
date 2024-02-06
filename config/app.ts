@@ -142,16 +142,16 @@ export default {
 		AuthenticationServiceResolver,
 		CorsServiceResolver,
 		MaintenanceServiceResolver,
+		InertiaServiceResolver,
 		PrettyErrorsServiceResolver,
 		TypeScriptPortsServiceResolver,
+
+		// Package Service Resolvers...
 
 		// Application Service Resolvers...
 		AppServiceResolver,
 		RouterServiceResolver,
 		ValidationServiceResolver,
-
-		// Package Service Resolvers...
-		InertiaServiceResolver,
 	]
 
 }
