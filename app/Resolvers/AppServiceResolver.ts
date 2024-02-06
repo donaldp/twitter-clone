@@ -6,6 +6,11 @@ import { Authentication } from '../Services/Authentication'
 
 export class AppServiceResolver extends ServiceResolver {
 	boot(): AppServiceResolver {
+		this.app.server({
+			ignoreTrailingSlash: true,
+			trustProxy: true
+		})
+
 		/** Register the mailers */
 		Auth.verificationMailer(VerifyEmail)
 		Auth.resetPasswordMailer(ResetPassword)
