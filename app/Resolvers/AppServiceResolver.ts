@@ -26,6 +26,7 @@ export class AppServiceResolver extends ServiceResolver {
 		Auth.onAuthenticated(Authentication.onAuthenticated)
 		Auth.onSessionDestroyed(Authentication.onSessionDestroyed)
 		Auth.onFetchAuthenticated(Authentication.onFetchAuthenticated)
+		Auth.onRegistered(Authentication.onRegistered)
 
 		return this
 	}

@@ -2,6 +2,7 @@ import { Hash, type Request, ValidationException, Redirect, DB, PersonalAccessTo
 import { UserRepository } from "../Repositories/UserRepository";
 import { asObject, without } from "@formidablejs/framework/lib/Support/Helpers";
 import crypto from "crypto";
+import { Inertia } from "@formidablejs/inertia";
 
 export class Authentication {
 	/**
@@ -27,31 +28,29 @@ export class Authentication {
 			username: 'required|string|alpha_dash|min:3',
 			password: 'required|string|min:6'
 		})
-
-		const [ [emailTaken], [usernameTaken] ] = await Promise.all([
-			UserRepository.where('email', request.input('email')).count(),
-			UserRepository.where('username', request.input('username')).count()
-		])
-
-		const errors: RegistrationErrors = {}
-
-		if (emailTaken > 0) {
-			errors.email = ['Email already in use']
-		}
-
-		if (usernameTaken > 0) {
-			errors.username = ['Username already in use']
-		}
-
-		if (Object.keys(errors).length > 0) {
-			throw ValidationException.withMessages(errors)
-		}
 	}
 
 	/**
 	 * Insert a new user into the users table.
 	 */
 	static async createUser(request: Request) {
+		const [ emailTaken, usernameTaken] = await Promise.all([
+			UserRepository.where('email', request.input('email')).count(),
+			UserRepository.where('username', request.input('username')).count()
+		])
+
+		if (emailTaken[0]['count(*)']) {
+			throw ValidationException.withMessages({
+				email: ['Email already in use']
+			})
+		}
+
+		if (usernameTaken[0]['count(*)']) {
+			throw ValidationException.withMessages({
+				username: ['Username already in use']
+			})
+		}
+
 		return UserRepository.create({
 			name: request.input('name'),
 			email: request.input('email'),
@@ -83,7 +82,7 @@ export class Authentication {
 	 */
 	static onRegistered(request: Request) {
 		if (request.expectsHtml()) {
-			return Redirect.to('/')
+			return Inertia.redirect('/')
 		}
 	}
 
